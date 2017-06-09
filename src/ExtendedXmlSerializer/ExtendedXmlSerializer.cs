@@ -47,6 +47,14 @@ namespace ExtendedXmlSerialization
         const string Item = "Item";
         private ISerializationToolsFactory _toolsFactory;
         
+        public Dictionary<string, object> ReferencesObjects
+        {
+            get
+            {
+                return _referencesObjects;
+            }
+        }
+
         private readonly Dictionary<string, object> _referencesObjects = new Dictionary<string, object>();
         private readonly Dictionary<string, object> _reservedReferencesObjects = new Dictionary<string, object>();
         
