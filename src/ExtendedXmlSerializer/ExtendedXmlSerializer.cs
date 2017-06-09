@@ -46,14 +46,8 @@ namespace ExtendedXmlSerialization
         const string Underscore = "_";
         const string Item = "Item";
         private ISerializationToolsFactory _toolsFactory;
-        
-        public Dictionary<string, object> ReferencesObjects
-        {
-            get
-            {
-                return _referencesObjects;
-            }
-        }
+
+        public Dictionary<string, object> ExternalReferencesObjects { get; } = new Dictionary<string, object>();
 
         private readonly Dictionary<string, object> _referencesObjects = new Dictionary<string, object>();
         private readonly Dictionary<string, object> _reservedReferencesObjects = new Dictionary<string, object>();
@@ -263,6 +257,11 @@ namespace ExtendedXmlSerialization
                     string refId = currentNode.Attribute(Ref)?.Value;
                     if (!string.IsNullOrEmpty(refId))
                     {
+                        if (ExternalReferencesObjects.ContainsKey(refId))
+                        {
+                            return ExternalReferencesObjects[refId];
+                        }
+
                         var key = currentNodeDef.FullName + Underscore + refId;
                         if (_referencesObjects.ContainsKey(key))
                         {
@@ -465,6 +464,17 @@ namespace ExtendedXmlSerialization
                 if (configuration.IsObjectReference)
                 {
                     var objectId = configuration.GetObjectId(o);
+                    if (ExternalReferencesObjects.ContainsKey(objectId))
+                    {
+                        if (forceSaveType)
+                        {
+                            writer.WriteAttributeString(Type, type.FullName);
+                        }
+
+                        writer.WriteAttributeString(Ref, objectId);
+                        writer.WriteEndElement();
+                        return;
+                    }
                     
                     var key = type.FullName + Underscore + objectId;
                     if (writeReservedObject && _reservedReferencesObjects.ContainsKey(key))
