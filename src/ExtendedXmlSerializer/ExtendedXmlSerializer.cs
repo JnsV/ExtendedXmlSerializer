@@ -233,6 +233,8 @@ namespace ExtendedXmlSerialization
            
             // Get configuration for type
             var configuration = GetConfiguration(currentNodeDef.Type);
+            //Console.Write($"{currentNodeDef.FullName} {currentNodeDef.Type} {configuration?.IsObjectReference}");
+            //Console.WriteLine();
             if (configuration != null)
             {
                 // Run migrator if exists
@@ -246,21 +248,39 @@ namespace ExtendedXmlSerialization
                     return configuration.ReadObject(currentNode);
                 }
             }
-            
+            //Console.Write($"{currentNodeDef.FullName} {currentNodeDef.Type} {configuration?.IsObjectReference}");
+            //Console.WriteLine();
             // Create new instance if not exists
             var currentObject = instance ?? currentNodeDef.ObjectActivator();
-
+            //Console.Write($"1");
+            //Console.WriteLine();
             if (configuration != null)
             {
+                //Console.Write($"2");
+                //Console.WriteLine();
                 if (configuration.IsObjectReference)
                 {
                     string refId = currentNode.Attribute(Ref)?.Value;
+                    //Console.Write($"{refId}");
+                    //Console.WriteLine();
                     if (!string.IsNullOrEmpty(refId))
                     {
-                        if (ExternalReferencesObjects.ContainsKey(refId))
+                        //Console.Write($"3");
+                        //Console.WriteLine();
+                        if (ExternalReferencesObjects.ContainsKey(currentNodeDef.FullName.Replace('.', '_') + Underscore + refId))
                         {
-                            return ExternalReferencesObjects[refId];
+                            //Console.Write($"4");
+                            //Console.WriteLine();
+                            //Console.Write($"{currentNodeDef.FullName.Replace('.', '_') + Underscore + refId}");
+                            //Console.WriteLine();
+                            //Console.Write($"{ExternalReferencesObjects[currentNodeDef.FullName.Replace('.', '_') + Underscore + refId]}");
+                            //Console.WriteLine();
+                            //if (currentNodeDef.FullName.Replace('.', '_') + Underscore + refId == "InSimu_NewEditor_Data_Symptoms_SymptomFamily_Hasmenes")
+                            //    throw new Exception();
+                            return ExternalReferencesObjects[currentNodeDef.FullName.Replace('.', '_') + Underscore + refId];
                         }
+                        //Console.Write(currentNodeDef.FullName.Replace('.', '_') + Underscore + refId);
+                        //Console.WriteLine();
 
                         var key = currentNodeDef.FullName + Underscore + refId;
                         if (_referencesObjects.ContainsKey(key))
@@ -314,9 +334,24 @@ namespace ExtendedXmlSerialization
                     //If xml does not contain type but we known that it is object
                     var obj = propertyInfo.GetValue(currentObject);
                     var obj2 = ReadXml(xElement, propertyDef, obj);
-                    if ( obj == null && obj2 != null )
+                    //Console.Write($"{obj} {obj2}");
+                    //Console.WriteLine();
+                    bool isObjValid = (obj != null);
+                    try
                     {
+                        isObjValid = isObjValid && !$"{obj}".StartsWith("<new");
+                        isObjValid = isObjValid && !$"{obj}".StartsWith("<empty");
+                    } catch
+                    {
+                        isObjValid = false;
+                    }
+
+                    if ( !isObjValid && obj2 != null )
+                    {
+                        //Console.Write($"***");
+                        //Console.WriteLine();
                         propertyInfo.SetValue(currentObject, obj2);
+                    
                     }
                 }
                 else
@@ -370,6 +405,8 @@ namespace ExtendedXmlSerialization
 
         private object ReadXmlArray(XElement currentNode, TypeDefinition type, object instance = null)
         {
+            //Console.Write(currentNode);
+            //Console.WriteLine();
             var elements = currentNode.Elements().ToArray();
             int arrayCount = elements.Length;
             object list = null;
@@ -464,7 +501,7 @@ namespace ExtendedXmlSerialization
                 if (configuration.IsObjectReference)
                 {
                     var objectId = configuration.GetObjectId(o);
-                    if (ExternalReferencesObjects.ContainsKey(objectId))
+                    if (ExternalReferencesObjects.ContainsKey(type.FullName.Replace('.','_') + Underscore + objectId))
                     {
                         if (forceSaveType)
                         {
