@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Extended Xml Serializer for .NET</Description>
+    <AssemblyTitle>ExtendedXmlSerializer</AssemblyTitle>
+    <VersionPrefix>1.5.0</VersionPrefix>
+    <Authors>Wojciech Nagórski</Authors>
+    <TargetFrameworks>net45;netstandard1.6</TargetFrameworks>
+    <AssemblyName>ExtendedXmlSerializer</AssemblyName>
+    <AssemblyOriginatorKeyFile>../../ExtendedXmlSerializer.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
+    <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
+    <PackageId>ExtendedXmlSerializer</PackageId>
+    <PackageTags>xmlserializer;xmlserialization;serialization;ExtendedXmlSerializer</PackageTags>
+    <PackageProjectUrl>https://github.com/wojtpl2/ExtendedXmlSerializer</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/wojtpl2/ExtendedXmlSerializer/blob/master/Licence</PackageLicenseUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/wojtpl2/ExtendedXmlSerializer</RepositoryUrl>
+    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.6' ">1.6.0</NetStandardImplicitPackageVersion>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.6' ">
+    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.1.0" />
+    <PackageReference Include="System.Xml.XmlSerializer" Version="4.0.11" />
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="1.0.0" />
+  </ItemGroup>
+
+</Project>
