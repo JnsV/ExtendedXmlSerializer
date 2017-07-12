@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Extended Xml Serializer for .NET - ASP Core integration</Description>
+    <AssemblyTitle>ExtendedXmlSerializer.AspCore</AssemblyTitle>
+    <VersionPrefix>1.5.0</VersionPrefix>
+    <Authors>Wojciech Nagórski</Authors>
+    <TargetFramework>netstandard1.6</TargetFramework>
+    <AssemblyName>ExtendedXmlSerializer.AspCore</AssemblyName>
+    <AssemblyOriginatorKeyFile>../../ExtendedXmlSerializer.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
+    <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
+    <PackageId>ExtendedXmlSerializer.AspCore</PackageId>
+    <PackageTags>xmlserializer;xmlserialization;serialization;ExtendedXmlSerializer</PackageTags>
+    <PackageProjectUrl>https://github.com/wojtpl2/ExtendedXmlSerializer</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/wojtpl2/ExtendedXmlSerializer/blob/master/Licence</PackageLicenseUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/wojtpl2/ExtendedXmlSerializer</RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.6' ">
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="1.0.3" />
+    <PackageReference Include="Microsoft.Net.Http.Headers" Version="1.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Xml" Version="1.0.3" />
+  </ItemGroup>
+
+</Project>
