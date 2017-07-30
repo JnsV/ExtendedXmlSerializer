@@ -346,7 +346,7 @@ namespace ExtendedXmlSerialization
                         isObjValid = false;
                     }
 
-                    if ( !isObjValid && obj2 != null )
+                    if ( (!isObjValid || propertyDef.IsDictionary) && obj2 != null )
                     {
                         //Console.Write($"***");
                         //Console.WriteLine();
