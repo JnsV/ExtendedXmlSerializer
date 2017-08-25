@@ -339,8 +339,9 @@ namespace ExtendedXmlSerialization
                     bool isObjValid = (obj != null);
                     try
                     {
-                        isObjValid = isObjValid && !$"{obj}".StartsWith("<new");
-                        isObjValid = isObjValid && !$"{obj}".StartsWith("<empty");
+                        //HACK: This is how unitialized objects created as default property values are invalidated. It has caused major headaches. Touch with care and find a proper solution if possible!
+                        isObjValid = isObjValid && ((obj is ICollection) || !$"{obj}".StartsWith("<new"));
+                        isObjValid = isObjValid && ((obj is ICollection) || !$"{obj}".StartsWith("<empty"));
                     } catch
                     {
                         isObjValid = false;
